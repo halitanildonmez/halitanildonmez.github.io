@@ -4,6 +4,7 @@
 
 body {
   margin: 0;
+  background-color: #f1f1f1;
 }
 
 /* Style the header */
@@ -49,6 +50,8 @@ body {
 /* Middle column */
 .column.middle {
   width: 50%;
+  border-left: solid 1px;
+  border-right: solid 1px;
 }
 
 /* Clear floats after the columns */
@@ -71,9 +74,9 @@ body {
 }
 
 table, th, td {
-  border: 1px solid black;
+
   border-collapse: collapse;
 }
 th, td {
-  padding: 15px;
+  padding: 5px;
 }
