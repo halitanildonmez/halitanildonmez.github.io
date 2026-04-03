@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Halit Dönmez — Software & AI Engineer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Mono:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0f;
+    --surface: #141418;
+    --border: #1f1f28;
+    --accent: #4f8ef7;
+    --accent2: #a78bfa;
+    --accent3: #34d399;
+    --text: #e8e8f0;
+    --muted: #6b6b80;
+    --card: #18181f;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 300;
+    line-height: 1.7;
+    overflow-x: hidden;
+  }
+
+  /* ── Grid noise overlay ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(79,142,247,0.03) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(79,142,247,0.03) 1px, transparent 1px);
+    background-size: 60px 60px;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container { max-width: 1000px; margin: 0 auto; padding: 0 32px; position: relative; z-index: 1; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    background: rgba(13,13,15,0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    z-index: 100;
+    padding: 16px 0;
+  }
+  nav .inner { max-width: 1000px; margin: 0 auto; padding: 0 32px; display: flex; justify-content: space-between; align-items: center; }
+  nav .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 15px; letter-spacing: 0.05em; color: var(--text); text-decoration: none; }
+  nav .logo span { color: var(--accent); }
+  nav ul { list-style: none; display: flex; gap: 28px; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 13px; font-family: 'DM Mono', monospace; transition: color 0.2s; }
+  nav a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    padding: 160px 0 100px;
+    position: relative;
+  }
+  .hero-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--accent);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.1s;
+  }
+  .hero h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(42px, 7vw, 76px);
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 24px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.2s;
+  }
+  .hero h1 .line2 { color: var(--accent); }
+  .hero-sub {
+    font-size: 17px;
+    color: var(--muted);
+    max-width: 560px;
+    line-height: 1.8;
+    margin-bottom: 40px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.35s;
+  }
+  .hero-tags {
+    display: flex; flex-wrap: wrap; gap: 10px;
+    margin-bottom: 48px;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.45s;
+  }
+  .tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 5px 12px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+    letter-spacing: 0.05em;
+  }
+  .tag.hi { border-color: var(--accent); color: var(--accent); background: rgba(79,142,247,0.06); }
+  .tag.hi2 { border-color: var(--accent2); color: var(--accent2); background: rgba(167,139,250,0.06); }
+  .tag.hi3 { border-color: var(--accent3); color: var(--accent3); background: rgba(52,211,153,0.06); }
+  .hero-links {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    opacity: 0;
+    animation: fadeUp 0.6s ease forwards 0.55s;
+  }
+  .btn {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    padding: 12px 24px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: all 0.2s;
+    letter-spacing: 0.03em;
+  }
+  .btn-primary { background: var(--accent); color: #0d0d0f; font-weight: 500; }
+  .btn-primary:hover { background: #6ba3ff; transform: translateY(-1px); }
+  .btn-ghost { border: 1px solid var(--border); color: var(--muted); }
+  .btn-ghost:hover { border-color: var(--accent); color: var(--accent); }
+
+  /* ── SECTION ── */
+  section { padding: 80px 0; border-top: 1px solid var(--border); }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 32px;
+    letter-spacing: -0.02em;
+    margin-bottom: 48px;
+  }
+
+  /* ── ABOUT ── */
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: start; }
+  .about-text p { color: var(--muted); font-size: 15px; line-height: 1.9; margin-bottom: 16px; }
+  .about-text p strong { color: var(--text); font-weight: 500; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .stat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .stat-card .num {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: 36px;
+    color: var(--accent);
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+  .stat-card .label { font-size: 12px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .location-row { margin-top: 16px; display: flex; gap: 12px; flex-wrap: wrap; }
+  .loc-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 6px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    color: var(--muted);
+  }
+  .loc-badge.active { border-color: var(--accent3); color: var(--accent3); }
+
+  /* ── SKILLS ── */
+  .skills-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+  .skill-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 22px;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .skill-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .skill-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 10px;
+  }
+  .skill-card.green h4 { color: var(--accent3); }
+  .skill-card.purple h4 { color: var(--accent2); }
+  .skill-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+  .skill-tag {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    padding: 3px 8px;
+    background: rgba(255,255,255,0.04);
+    border-radius: 4px;
+    color: var(--muted);
+  }
+
+  /* ── EXPERIENCE ── */
+  .exp-list { display: flex; flex-direction: column; gap: 0; }
+  .exp-item {
+    display: grid;
+    grid-template-columns: 180px 1fr;
+    gap: 0 32px;
+    padding: 32px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .exp-item:last-child { border-bottom: none; }
+  .exp-meta { padding-top: 2px; }
+  .exp-period {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .exp-company {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+  .exp-loc { font-size: 11px; color: var(--muted); font-family: 'DM Mono', monospace; }
+  .exp-content h3 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    margin-bottom: 8px;
+    letter-spacing: -0.01em;
+  }
+  .exp-content p { font-size: 14px; color: var(--muted); line-height: 1.8; margin-bottom: 12px; }
+  .exp-badges { display: flex; flex-wrap: wrap; gap: 6px; }
+  .exp-badge {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    padding: 3px 8px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--muted);
+  }
+  .exp-badge.sec { border-color: var(--accent3); color: var(--accent3); }
+  .exp-badge.ai { border-color: var(--accent2); color: var(--accent2); }
+
+  /* ── PROJECTS ── */
+  .projects-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .project-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px;
+    transition: border-color 0.2s, transform 0.2s;
+    text-decoration: none;
+    display: block;
+  }
+  .project-card:hover { border-color: var(--accent2); transform: translateY(-2px); }
+  .project-card .proj-type {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: var(--accent2);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .project-card h4 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .project-card p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+
+  /* ── EDUCATION ── */
+  .edu-list { display: flex; flex-direction: column; gap: 20px; }
+  .edu-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 22px 24px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 12px;
+    align-items: start;
+  }
+  .edu-degree {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .edu-school { font-size: 13px; color: var(--muted); margin-bottom: 4px; }
+  .edu-detail { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--accent); }
+  .edu-year {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  .contact-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    transition: border-color 0.2s, transform 0.2s;
+  }
+  .contact-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+  .contact-icon {
+    width: 40px; height: 40px;
+    background: rgba(79,142,247,0.1);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+  }
+  .contact-label { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); margin-bottom: 2px; }
+  .contact-value { font-size: 14px; color: var(--text); font-weight: 500; }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 32px 0;
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    position: relative; z-index: 1;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+  }
+  .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 700px) {
+    .about-grid, .skills-grid, .projects-grid, .contact-grid { grid-template-columns: 1fr; }
+    .skills-grid { grid-template-columns: 1fr 1fr; }
+    .exp-item { grid-template-columns: 1fr; gap: 8px; }
+    .hero h1 { font-size: 38px; }
+    nav ul { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="inner">
+    <a href="#" class="logo">HD<span>.</span></a>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#skills">Skills</a></li>
+      <li><a href="#experience">Experience</a></li>
+      <li><a href="#projects">Projects</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="container">
+  <div class="hero">
+    <div class="hero-label">// Amsterdam · Stockholm · Available</div>
+    <h1>Halit Dönmez<br><span class="line2">Software & AI Engineer</span></h1>
+    <p class="hero-sub">
+      Senior engineer with 9+ years building mission-critical distributed systems, agentic AI pipelines, and secure financial infrastructure. Swedish citizen. Based in Amsterdam.
+    </p>
+    <div class="hero-tags">
+      <span class="tag hi">Java · Scala · Python</span>
+      <span class="tag hi2">Agentic AI · MCP · RAG</span>
+      <span class="tag hi3">Security Champion</span>
+      <span class="tag">Kubernetes · Docker · Terraform</span>
+      <span class="tag">Apache Kafka · Spark</span>
+      <span class="tag">GCP · AWS</span>
+    </div>
+    <div class="hero-links">
+      <a href="mailto:halitanil.donmez@gmail.com" class="btn btn-primary">Get in touch</a>
+      <a href="https://github.com/halitanildonmez" target="_blank" class="btn btn-ghost">GitHub →</a>
+      <a href="https://linkedin.com/in/halit-anil-donmez" target="_blank" class="btn btn-ghost">LinkedIn →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="section-label">// 01 — About</div>
+    <div class="section-title">Who I am</div>
+    <div class="about-grid">
+      <div class="about-text fade-in">
+        <p>I build <strong>large-scale distributed systems and AI-powered infrastructure</strong> for high-stakes environments — payments, banking, and financial platforms where correctness and reliability are non-negotiable.</p>
+        <p>Beyond production engineering, I'm deeply interested in <strong>agentic AI</strong>. I independently build multi-agent pipelines and MCP (Model Context Protocol) integrations, exploring the engineering discipline required to make autonomous AI systems reliable. I use Claude Code and GitHub Copilot daily — not as autocomplete, but as genuine collaborators.</p>
+        <p>I've served as <strong>Security Champion</strong> across two financial organisations, leading threat modelling sessions, security code reviews, and vulnerability remediation in regulated banking environments.</p>
+        <p>I hold an MSc in Computer Science from <strong>KTH Royal Institute of Technology</strong> in Stockholm, where I wrote my thesis on Reinforcement Learning. I'm a Swedish citizen, fluent in Swedish and English, and based in Amsterdam.</p>
+        <div class="location-row">
+          <span class="loc-badge active">🇳🇱 Amsterdam</span>
+          <span class="loc-badge">🇸🇪 Swedish citizen</span>
+          <span class="loc-badge">No visa needed</span>
+        </div>
+      </div>
+      <div class="about-stats fade-in">
+        <div class="stat-card"><div class="num">9+</div><div class="label">Years experience</div></div>
+        <div class="stat-card"><div class="num">2×</div><div class="label">Security Champion</div></div>
+        <div class="stat-card"><div class="num">5+</div><div class="label">Companies & domains</div></div>
+        <div class="stat-card"><div class="num">∞</div><div class="label">Curiosity for AI</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label">// 02 — Skills</div>
+    <div class="section-title">What I work with</div>
+    <div class="skills-grid">
+      <div class="skill-card fade-in">
+        <h4>Languages</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Java</span><span class="skill-tag">Scala</span>
+          <span class="skill-tag">Python</span><span class="skill-tag">C++</span>
+          <span class="skill-tag">C#</span><span class="skill-tag">JavaScript</span>
+          <span class="skill-tag">SQL</span>
+        </div>
+      </div>
+      <div class="skill-card purple fade-in">
+        <h4>AI & Agentic Systems</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">MCP Integration</span>
+          <span class="skill-tag">Agentic Pipelines</span>
+          <span class="skill-tag">RAG</span>
+          <span class="skill-tag">LLM Orchestration</span>
+          <span class="skill-tag">Prompt Engineering</span>
+          <span class="skill-tag">Claude Code</span>
+          <span class="skill-tag">LangChain</span>
+        </div>
+      </div>
+      <div class="skill-card green fade-in">
+        <h4>Security</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Threat Modelling</span>
+          <span class="skill-tag">Security Code Review</span>
+          <span class="skill-tag">Vulnerability Mgmt</span>
+          <span class="skill-tag">IAM</span>
+          <span class="skill-tag">STRIDE</span>
+          <span class="skill-tag">Secure-by-Design</span>
+        </div>
+      </div>
+      <div class="skill-card fade-in">
+        <h4>Distributed Systems</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">Apache Kafka</span>
+          <span class="skill-tag">Apache Spark</span>
+          <span class="skill-tag">Microservices</span>
+          <span class="skill-tag">Event-Driven</span>
+          <span class="skill-tag">Spring Boot</span>
+          <span class="skill-tag">REST APIs</span>
+        </div>
+      </div>
+      <div class="skill-card fade-in">
+        <h4>Cloud & DevOps</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">GCP</span><span class="skill-tag">AWS</span>
+          <span class="skill-tag">Kubernetes</span><span class="skill-tag">Docker</span>
+          <span class="skill-tag">Terraform</span>
+          <span class="skill-tag">GitLab CI/CD</span>
+          <span class="skill-tag">Jenkins</span>
+        </div>
+      </div>
+      <div class="skill-card fade-in">
+        <h4>Data</h4>
+        <div class="skill-tags">
+          <span class="skill-tag">PostgreSQL</span>
+          <span class="skill-tag">BigQuery</span>
+          <span class="skill-tag">DBT</span>
+          <span class="skill-tag">ETL Pipelines</span>
+          <span class="skill-tag">MySQL</span>
+          <span class="skill-tag">Data Modelling</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label">// 03 — Experience</div>
+    <div class="section-title">Where I've worked</div>
+    <div class="exp-list">
+
+      <div class="exp-item fade-in">
+        <div class="exp-meta">
+          <div class="exp-period">Nov 2025 — Present</div>
+          <div class="exp-company">Postcode Loterij</div>
+          <div class="exp-loc">Amsterdam, NL</div>
+        </div>
+        <div class="exp-content">
+          <h3>Senior Software Engineer</h3>
+          <p>Own end-to-end draw execution and payment workflows — bank integrations, settlement, reconciliation, and internal money movements — on 24/7 production systems. Carry on-call responsibility and serve as Security Champion.</p>
+          <div class="exp-badges">
+            <span class="exp-badge sec">Security Champion</span>
+            <span class="exp-badge ai">AI Tooling</span>
+            <span class="exp-badge">Java</span><span class="exp-badge">Scala</span>
+            <span class="exp-badge">Kubernetes</span><span class="exp-badge">PostgreSQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-meta">
+          <div class="exp-period">Oct 2023 — Nov 2025</div>
+          <div class="exp-company">ING Bank</div>
+          <div class="exp-loc">Amsterdam, NL</div>
+        </div>
+        <div class="exp-content">
+          <h3>Software Engineer</h3>
+          <p>Delivered large-scale ETL solutions on GCP using Apache Spark; built Kafka clusters on Kubernetes. Created and taught internal AI tooling courses (Claude Code, GitHub Copilot). Security Champion: threat modelling and vulnerability remediation to banking standards.</p>
+          <div class="exp-badges">
+            <span class="exp-badge sec">Security Champion</span>
+            <span class="exp-badge ai">AI Courses</span>
+            <span class="exp-badge">Apache Spark</span><span class="exp-badge">Kafka</span>
+            <span class="exp-badge">GCP</span><span class="exp-badge">Terraform</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-meta">
+          <div class="exp-period">Jun 2020 — Oct 2023</div>
+          <div class="exp-company">Avanza Bank</div>
+          <div class="exp-loc">Stockholm, SE</div>
+        </div>
+        <div class="exp-content">
+          <h3>Software Engineer</h3>
+          <p>Designed performant REST APIs in Java for Sweden's leading online brokerage serving millions of users. Built and deployed a customer churn prediction ML model. Drove internal ML adoption initiative and presented at developer conferences.</p>
+          <div class="exp-badges">
+            <span class="exp-badge ai">ML Model</span>
+            <span class="exp-badge">Java</span><span class="exp-badge">BigQuery</span>
+            <span class="exp-badge">REST APIs</span><span class="exp-badge">GitLab CI/CD</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-meta">
+          <div class="exp-period">Oct 2018 — Jun 2020</div>
+          <div class="exp-company">Frostbite (EA)</div>
+          <div class="exp-loc">Stockholm, SE</div>
+        </div>
+        <div class="exp-content">
+          <h3>Software Engineer</h3>
+          <p>Contributed to rendering and physics systems within EA's Frostbite game engine in C++ and C#. Developed automated test frameworks improving CI reliability across a large multi-team codebase. Build management with Jenkins and Perforce.</p>
+          <div class="exp-badges">
+            <span class="exp-badge">C++</span><span class="exp-badge">C#</span>
+            <span class="exp-badge">Jenkins</span><span class="exp-badge">Perforce</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="exp-item fade-in">
+        <div class="exp-meta">
+          <div class="exp-period">Jun 2017 — Oct 2018</div>
+          <div class="exp-company">Digpro</div>
+          <div class="exp-loc">Stockholm, SE</div>
+        </div>
+        <div class="exp-content">
+          <h3>Software Engineer</h3>
+          <p>Backend development in Java for power utility clients — error handling, message generation, traffic redirection, and third-party SOAP integrations for data exchange within utility application projects.</p>
+          <div class="exp-badges">
+            <span class="exp-badge">Java</span><span class="exp-badge">SOAP</span><span class="exp-badge">Backend</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label">// 04 — Projects</div>
+    <div class="section-title">Personal work</div>
+    <div class="projects-grid">
+      <a href="https://github.com/halitanildonmez" target="_blank" class="project-card fade-in">
+        <div class="proj-type">Agentic AI</div>
+        <h4>Multi-Agent Pipelines & MCP</h4>
+        <p>Independently designing and building multi-agent systems using the Model Context Protocol — exploring orchestration patterns, tool-use security, and reliable AI workflows from first principles.</p>
+      </a>
+      <a href="https://github.com/halitanildonmez" target="_blank" class="project-card fade-in">
+        <div class="proj-type">Machine Learning</div>
+        <h4>NFL Attendance Forecasting</h4>
+        <p>Demand forecasting system using LightGBM with engineered features — form, weather, matchup quality, primetime flags. Experiment tracking with MLflow. COVID season distribution shift analysis.</p>
+      </a>
+      <a href="https://github.com/halitanildonmez" target="_blank" class="project-card fade-in">
+        <div class="proj-type">Security Research</div>
+        <h4>Agent Threat Modelling</h4>
+        <p>STRIDE-based threat model for multi-agent LLM systems — covering prompt injection, privilege escalation via MCP, tool misuse, and audit trail completeness in agentic architectures.</p>
+      </a>
+      <a href="https://github.com/halitanildonmez" target="_blank" class="project-card fade-in">
+        <div class="proj-type">PhD Research</div>
+        <h4>Security of Multi-Agent Systems</h4>
+        <p>Exploring the intersection of RL security, adversarial robustness, and multi-agent trust — following the AAAI 2025 paper on the multi-agent security tax. Corresponding with Oxford researchers.</p>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION -->
+<section id="education">
+  <div class="container">
+    <div class="section-label">// 05 — Education</div>
+    <div class="section-title">Academic background</div>
+    <div class="edu-list">
+      <div class="edu-item fade-in">
+        <div>
+          <div class="edu-degree">MSc Computer Science</div>
+          <div class="edu-school">KTH Royal Institute of Technology, Stockholm</div>
+          <div class="edu-detail">Thesis: Reinforcement Learning — sequential decision-making and policy optimisation</div>
+        </div>
+        <div class="edu-year">2015 — 2017</div>
+      </div>
+      <div class="edu-item fade-in">
+        <div>
+          <div class="edu-degree">Erasmus Exchange — Computer Science</div>
+          <div class="edu-school">KTH Royal Institute of Technology, Stockholm</div>
+          <div class="edu-detail">Exchange semester during BSc studies</div>
+        </div>
+        <div class="edu-year">2014</div>
+      </div>
+      <div class="edu-item fade-in">
+        <div>
+          <div class="edu-degree">BSc Computer Engineering</div>
+          <div class="edu-school">Bilkent University, Ankara</div>
+          <div class="edu-detail">Computer Engineering with strong mathematics foundation</div>
+        </div>
+        <div class="edu-year">2010 — 2014</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label">// 06 — Contact</div>
+    <div class="section-title">Get in touch</div>
+    <div class="contact-grid">
+      <a href="mailto:halitanil.donmez@gmail.com" class="contact-card fade-in">
+        <div class="contact-icon">✉</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value">halitanil.donmez@gmail.com</div>
+        </div>
+      </a>
+      <a href="https://linkedin.com/in/halit-anil-donmez" target="_blank" class="contact-card fade-in">
+        <div class="contact-icon">in</div>
+        <div>
+          <div class="contact-label">LinkedIn</div>
+          <div class="contact-value">halit-anil-donmez</div>
+        </div>
+      </a>
+      <a href="https://github.com/halitanildonmez" target="_blank" class="contact-card fade-in">
+        <div class="contact-icon">⌥</div>
+        <div>
+          <div class="contact-label">GitHub</div>
+          <div class="contact-value">halitanildonmez</div>
+        </div>
+      </a>
+      <div class="contact-card fade-in" style="cursor:default">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Location</div>
+          <div class="contact-value">Amsterdam, Netherlands</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Halit Dönmez · Amsterdam · Swedish Citizen · No visa needed · Built with ♥ and dark mode</p>
+  </div>
+</footer>
+
+<script>
+  // Scroll-triggered fade-in
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.1 });
+
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>
